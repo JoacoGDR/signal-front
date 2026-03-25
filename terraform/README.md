@@ -12,7 +12,8 @@ Provisions an S3 bucket + CloudFront distribution to host the Signal SPA, **SSM 
 
 - AWS account; Terraform Cloud or Terraform CLI with credentials
 - A globally unique S3 `bucket_name`
-- Backend API URL for `api_base_url`
+- A DNS-controlled **`domain_name`** (e.g. `boxlead.app`) for the SPA — ACM validates via CNAME at your registrar
+- Backend **`api_base_url`** (HTTPS, e.g. `https://api.boxlead.app`)
 
 ## Usage
 
@@ -28,11 +29,11 @@ terraform apply
 
 ## After apply
 
-1. Copy outputs **`deployer_access_key_id`** and **`deployer_secret_access_key`** into GitHub **Actions secrets**:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-2. Optionally set `AWS_REGION` (workflow defaults to `us-east-1` if unset).
-3. Set backend **`cors_allowed_origins`** to `https://<cloudfront_domain>` and refresh backend env (SSM + deploy).
+1. **ACM DNS validation:** Use output **`acm_validation_records`** — add the CNAME record(s) at your DNS provider. Re-run or wait for `terraform apply` to finish once validation completes (can take several minutes).
+2. **Frontend DNS:** Point **`domain_name`** at CloudFront: use a **CNAME** to **`cloudfront_domain_name`** for a subdomain, or an **ALIAS/ANAME** (or Route 53 alias) to the same target for an **apex** name like `boxlead.app` (many registrars do not allow a bare CNAME at the root).
+3. Copy outputs **`deployer_access_key_id`** and **`deployer_secret_access_key`** into GitHub **Actions secrets** (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`).
+4. Set GitHub secret **`AWS_REGION`** to match Terraform `aws_region` (e.g. `us-east-2`).
+5. Set backend **`cors_allowed_origins`** to **`https://<your-domain>`** (e.g. `https://boxlead.app`) and redeploy the backend so SSM updates.
 
 ## SSM prefix and GitHub Actions
 
@@ -46,7 +47,9 @@ SSM parameters created:
 
 ## Outputs
 
-- `cloudfront_url` — SPA URL (set backend CORS to this origin, HTTPS).
+- `acm_validation_records` — CNAME records required to issue the ACM certificate.
+- `cloudfront_domain_name` / `cloudfront_url` — CloudFront hostname (CNAME target).
+- `spa_custom_domain_url` — expected SPA URL once DNS is correct.
 - `deployer_access_key_id` / `deployer_secret_access_key` — GitHub secrets for CI.
 - `ssm_parameter_prefix` — should match `SIGNAL_FRONT_SSM_PREFIX` in the workflow.
 

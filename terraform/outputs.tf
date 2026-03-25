@@ -9,13 +9,23 @@ output "cloudfront_distribution_id" {
 }
 
 output "cloudfront_domain_name" {
-  description = "CloudFront domain name (use as SPA URL; set backend CORS to https://<this>)."
+  description = "CloudFront *.cloudfront.net hostname (CNAME your custom domain here)."
   value       = aws_cloudfront_distribution.site.domain_name
 }
 
 output "cloudfront_url" {
-  description = "HTTPS URL for the SPA."
+  description = "HTTPS URL via CloudFront default hostname (custom domain is var.domain_name)."
   value       = "https://${aws_cloudfront_distribution.site.domain_name}"
+}
+
+output "spa_custom_domain_url" {
+  description = "HTTPS URL for the SPA when DNS points to CloudFront (your domain_name)."
+  value       = "https://${var.domain_name}"
+}
+
+output "acm_validation_records" {
+  description = "DNS validation CNAME(s) for the ACM certificate (us-east-1). Add at your registrar, then wait for aws_acm_certificate_validation to complete."
+  value       = aws_acm_certificate.site.domain_validation_options
 }
 
 output "deployer_access_key_id" {

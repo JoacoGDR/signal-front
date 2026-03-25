@@ -9,6 +9,11 @@ variable "bucket_name" {
   description = "Globally unique S3 bucket name for the static site."
 }
 
+variable "domain_name" {
+  type        = string
+  description = "Custom domain for the SPA (CloudFront alternate domain name; e.g. boxlead.app)."
+}
+
 variable "ssm_prefix" {
   type        = string
   description = "SSM path prefix for CI-readable parameters (must match GitHub Actions env SIGNAL_FRONT_SSM_PREFIX)."
@@ -22,7 +27,7 @@ variable "ssm_prefix" {
 
 variable "api_base_url" {
   type        = string
-  description = "Backend API base URL for Vite (stored in SSM as VITE_API_BASE_URL; e.g. http://ec2-public-ip:8080)."
+  description = "Backend API base URL for Vite (stored in SSM as VITE_API_BASE_URL; e.g. https://api.boxlead.app)."
 }
 
 variable "project_name" {

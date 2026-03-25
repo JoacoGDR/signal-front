@@ -1,14 +1,15 @@
 # Copy to terraform.tfvars (gitignored) and fill in real values.
 # Never commit terraform.tfvars.
 
-aws_region  = "us-east-1"
-bucket_name = "signal-front-your-unique-name"
+aws_region   = "us-east-2"
+bucket_name  = "signal-front-your-unique-name"
+domain_name  = "boxlead.app"
 
 # Must match GitHub Actions env SIGNAL_FRONT_SSM_PREFIX in deploy.yml (default /signal-front/)
 # ssm_prefix = "/signal-front/"
 
-# Backend API URL — written to SSM as VITE_API_BASE_URL for the CI build
-api_base_url = "http://ec2-public-ip:8080"
+# Backend API URL — written to SSM as VITE_API_BASE_URL for the CI build (must be HTTPS for browser mixed-content rules)
+api_base_url = "https://api.boxlead.app"
 
 # PriceClass_100 = US/EU only (cheapest); PriceClass_All = global
 price_class = "PriceClass_100"
