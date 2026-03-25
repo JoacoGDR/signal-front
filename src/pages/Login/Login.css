@@ -1,0 +1,96 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--signal-space-lg);
+  background: var(--signal-bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--signal-surface);
+  border: 1px solid var(--signal-border);
+  border-radius: var(--signal-radius-lg);
+  padding: var(--signal-space-xl);
+  box-shadow: var(--signal-shadow);
+}
+
+.auth-title {
+  margin-bottom: var(--signal-space-xs);
+}
+
+.auth-subtitle {
+  color: var(--signal-text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: var(--signal-space-lg);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--signal-space-md);
+}
+
+.auth-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--signal-space-xs);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--signal-heading);
+  text-align: left;
+}
+
+.auth-input {
+  padding: var(--signal-space-sm) var(--signal-space-md);
+  border: 1px solid var(--signal-border);
+  border-radius: var(--signal-radius-sm);
+  background: var(--signal-surface);
+  color: var(--signal-text);
+}
+
+.auth-input:focus {
+  outline: 2px solid var(--signal-accent-muted);
+  outline-offset: 1px;
+  border-color: var(--signal-accent);
+}
+
+.auth-error {
+  padding: var(--signal-space-sm) var(--signal-space-md);
+  background: var(--signal-danger-muted);
+  color: var(--signal-danger);
+  border-radius: var(--signal-radius-sm);
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.auth-submit {
+  margin-top: var(--signal-space-sm);
+  padding: var(--signal-space-sm) var(--signal-space-md);
+  border: none;
+  border-radius: var(--signal-radius-sm);
+  background: var(--signal-accent);
+  color: white;
+  font-weight: 600;
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: var(--signal-accent-hover);
+}
+
+.auth-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: var(--signal-space-lg);
+  font-size: 0.875rem;
+  color: var(--signal-text-muted);
+}
+
+.auth-footer a {
+  font-weight: 500;
+}
