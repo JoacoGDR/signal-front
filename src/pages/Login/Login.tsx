@@ -26,7 +26,7 @@ export function Login() {
     <div className="auth-page">
       <div className="auth-card">
         <h1 className="auth-title">Sign in</h1>
-        <p className="auth-subtitle">Welcome back to Signal</p>
+        <p className="auth-subtitle">Welcome back to BoxLead</p>
         <form className="auth-form" onSubmit={handleSubmit}>
           {error ? (
             <div className="auth-error" role="alert">

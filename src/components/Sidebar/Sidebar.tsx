@@ -14,7 +14,7 @@ export function Sidebar() {
   return (
     <aside className="sidebar" aria-label="Main navigation">
       <div className="sidebar-brand">
-        <span className="sidebar-logo">Signal</span>
+        <span className="sidebar-logo">BoxLead</span>
       </div>
       <nav className="sidebar-nav">
         {links.map(({ to, label }) => (
