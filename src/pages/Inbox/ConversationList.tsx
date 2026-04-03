@@ -1,17 +1,19 @@
-import type { ConversationResponse, LeadResponse } from '../../api/types'
-import { formatShortDate, truncate } from '../../util/format'
-import './ConversationList.css'
+import type { ConversationResponse, LeadResponse } from "../../api/types";
+import { formatShortDate, truncate } from "../../util/format";
+import "./ConversationList.css";
 
 type Props = {
-  conversations: ConversationResponse[]
-  leadsById: Record<string, LeadResponse>
-  selectedId: string | null
-  onSelect: (id: string) => void
-}
+  conversations: ConversationResponse[];
+  leadsById: Record<string, LeadResponse>;
+  selectedId: string | null;
+  onSelect: (id: string) => void;
+};
 
 function leadLabel(lead: LeadResponse | undefined): string {
-  if (!lead) return 'Unknown lead'
-  return lead.name?.trim() || lead.email?.trim() || lead.externalLeadId || 'Lead'
+  if (!lead) return "Unknown lead";
+  return (
+    lead.name?.trim() || lead.email?.trim() || lead.externalLeadId || "Lead"
+  );
 }
 
 export function ConversationList({
@@ -29,21 +31,21 @@ export function ConversationList({
           here.
         </p>
       </div>
-    )
+    );
   }
 
   return (
     <ul className="conversation-list" role="listbox" aria-label="Conversations">
       {conversations.map((c) => {
-        const lead = leadsById[c.leadId]
-        const active = c.id === selectedId
+        const lead = leadsById[c.leadId];
+        const active = c.id === selectedId;
         return (
           <li key={c.id}>
             <button
               type="button"
               role="option"
               aria-selected={active}
-              className={`conversation-item${active ? ' conversation-item-active' : ''}`}
+              className={`conversation-item${active ? " conversation-item-active" : ""}`}
               onClick={() => onSelect(c.id)}
             >
               <span className="conversation-item-platform">{c.platform}</span>
@@ -56,8 +58,8 @@ export function ConversationList({
               </span>
             </button>
           </li>
-        )
+        );
       })}
     </ul>
-  )
+  );
 }

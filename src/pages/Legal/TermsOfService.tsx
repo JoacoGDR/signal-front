@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import './Legal.css'
+import { Link } from "react-router-dom";
+import "./Legal.css";
 
 export function TermsOfService() {
   return (
@@ -21,8 +21,8 @@ export function TermsOfService() {
         BoxLead is a SaaS customer relationship management (CRM) platform that
         connects to Facebook Pages and Instagram Professional accounts via the
         Meta Graph API. It allows businesses to receive, view, and reply to
-        direct messages, manage leads, and organize customer conversations from a
-        single dashboard.
+        direct messages, manage leads, and organize customer conversations from
+        a single dashboard.
       </p>
 
       <h2>2. Account Responsibilities</h2>
@@ -32,8 +32,8 @@ export function TermsOfService() {
           keep it up to date.
         </li>
         <li>
-          You are responsible for maintaining the confidentiality of your account
-          credentials.
+          You are responsible for maintaining the confidentiality of your
+          account credentials.
         </li>
         <li>
           You are responsible for all activity that occurs under your account.
@@ -45,15 +45,15 @@ export function TermsOfService() {
       </ul>
 
       <h2>3. Acceptable Use</h2>
-      <p>When using BoxLead, you agree <strong>not</strong> to:</p>
+      <p>
+        When using BoxLead, you agree <strong>not</strong> to:
+      </p>
       <ul>
         <li>
           Send spam, unsolicited messages, or any content that violates Meta's
           Platform Terms or Messaging Policies.
         </li>
-        <li>
-          Use the platform to harass, threaten, or abuse any individual.
-        </li>
+        <li>Use the platform to harass, threaten, or abuse any individual.</li>
         <li>
           Attempt to gain unauthorized access to other users' accounts, data, or
           our systems.
@@ -75,16 +75,16 @@ export function TermsOfService() {
       </p>
       <ul>
         <li>
-          All messaging is subject to Meta's Platform Terms, Community Standards,
-          and Messaging Policies.
+          All messaging is subject to Meta's Platform Terms, Community
+          Standards, and Messaging Policies.
         </li>
         <li>
-          BoxLead may restrict or suspend messaging functionality if Meta revokes
-          access or changes its policies.
+          BoxLead may restrict or suspend messaging functionality if Meta
+          revokes access or changes its policies.
         </li>
         <li>
-          You are solely responsible for the content of messages you send through
-          the platform.
+          You are solely responsible for the content of messages you send
+          through the platform.
         </li>
       </ul>
 
@@ -107,11 +107,12 @@ export function TermsOfService() {
 
       <h2>7. Termination</h2>
       <p>
-        You may stop using BoxLead at any time by disconnecting your integrations
-        and deleting your account. We reserve the right to suspend or terminate
-        your access if you violate these Terms, abuse the platform, or if
-        required by law. Upon termination, you may request deletion of your data
-        as described in our <Link to="/privacy-policy">Privacy Policy</Link>.
+        You may stop using BoxLead at any time by disconnecting your
+        integrations and deleting your account. We reserve the right to suspend
+        or terminate your access if you violate these Terms, abuse the platform,
+        or if required by law. Upon termination, you may request deletion of
+        your data as described in our{" "}
+        <Link to="/privacy-policy">Privacy Policy</Link>.
       </p>
 
       <h2>8. Changes to These Terms</h2>
@@ -123,10 +124,10 @@ export function TermsOfService() {
 
       <div className="legal-contact">
         <p>
-          <strong>Questions?</strong> Contact us at{' '}
+          <strong>Questions?</strong> Contact us at{" "}
           <a href="mailto:support@boxlead.io">support@boxlead.app</a>
         </p>
       </div>
     </div>
-  )
+  );
 }

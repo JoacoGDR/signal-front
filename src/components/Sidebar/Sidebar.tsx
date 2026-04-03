@@ -1,15 +1,15 @@
-import { NavLink } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import './Sidebar.css'
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import "./Sidebar.css";
 
 const links = [
-  { to: '/inbox', label: 'Inbox' },
-  { to: '/leads', label: 'Leads' },
-  { to: '/connections', label: 'Connections' },
-] as const
+  { to: "/app/inbox", label: "Inbox" },
+  { to: "/app/leads", label: "Leads" },
+  { to: "/app/connections", label: "Connections" },
+] as const;
 
 export function Sidebar() {
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth();
 
   return (
     <aside className="sidebar" aria-label="Main navigation">
@@ -22,9 +22,9 @@ export function Sidebar() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `sidebar-link${isActive ? ' sidebar-link-active' : ''}`
+              `sidebar-link${isActive ? " sidebar-link-active" : ""}`
             }
-            end={to === '/inbox'}
+            end={to === "/app/inbox"}
           >
             {label}
           </NavLink>
@@ -39,5 +39,5 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
-  )
+  );
 }

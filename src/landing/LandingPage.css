@@ -1,0 +1,262 @@
+/* ======================================================
+   Landing Page — Design Tokens & Shared Styles
+   Prefix: --landing-*
+   Scope: used exclusively by src/landing/ components
+   ====================================================== */
+
+.landing {
+  /* ── Color Palette (no pure blacks — sophisticated charcoal/slate) ── */
+  --landing-bg: #0a0a12;
+  --landing-bg-subtle: #0f0f1a;
+  --landing-surface: #141420;
+  --landing-surface-elevated: #1c1c2e;
+  --landing-border: rgba(255, 255, 255, 0.06);
+  --landing-border-strong: rgba(255, 255, 255, 0.12);
+
+  /* Text */
+  --landing-text: #a8a8c0;
+  --landing-text-muted: #636380;
+  --landing-heading: #ededed;
+  --landing-heading-secondary: #c8c8dd;
+
+  /* Accent — lavender/indigo */
+  --landing-accent: #818cf8;
+  --landing-accent-hover: #a78bfa;
+  --landing-accent-glow: rgba(129, 140, 248, 0.12);
+  --landing-accent-gradient: linear-gradient(
+    135deg,
+    #818cf8 0%,
+    #a78bfa 50%,
+    #c084fc 100%
+  );
+  --landing-accent-gradient-vivid: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #8b5cf6 50%,
+    #a855f7 100%
+  );
+
+  /* Semantic */
+  --landing-success: #34d399;
+  --landing-warning: #fbbf24;
+  --landing-error: #f87171;
+
+  /* Spacing */
+  --landing-section-gap: clamp(80px, 10vw, 140px);
+  --landing-content-max: 1200px;
+  --landing-content-narrow: 800px;
+  --landing-content-padding: clamp(20px, 5vw, 40px);
+
+  /* Typography */
+  --landing-font-heading: "Inter", system-ui, -apple-system, sans-serif;
+  --landing-font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --landing-font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Radii */
+  --landing-radius-sm: 8px;
+  --landing-radius-md: 12px;
+  --landing-radius-lg: 20px;
+  --landing-radius-xl: 28px;
+
+  /* Shadows */
+  --landing-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --landing-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --landing-shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.5);
+  --landing-shadow-glow: 0 0 60px rgba(129, 140, 248, 0.08);
+  --landing-shadow-glow-strong: 0 0 80px rgba(129, 140, 248, 0.15);
+
+  /* Reset for landing scope */
+  background: var(--landing-bg);
+  color: var(--landing-text);
+  font-family: var(--landing-font-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* ── Section Container ── */
+.landing-section {
+  width: 100%;
+  padding: var(--landing-section-gap) var(--landing-content-padding);
+  position: relative;
+}
+
+.landing-container {
+  max-width: var(--landing-content-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.landing-container-narrow {
+  max-width: var(--landing-content-narrow);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Section headings ── */
+.landing-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--landing-accent);
+  margin-bottom: 16px;
+}
+
+.landing-section-label::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--landing-accent);
+  opacity: 0.6;
+}
+
+.landing-section-title {
+  font-family: var(--landing-font-heading);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--landing-heading);
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+}
+
+.landing-section-subtitle {
+  font-size: clamp(1rem, 2vw, 1.1875rem);
+  color: var(--landing-text);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 600px;
+}
+
+/* ── Buttons ── */
+.landing-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--landing-radius-sm);
+  font-family: var(--landing-font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.landing-btn-primary {
+  background: var(--landing-accent-gradient);
+  color: #ffffff;
+  box-shadow:
+    0 4px 20px rgba(129, 140, 248, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Animated shimmer on primary buttons */
+.landing-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+  transition: left 0.5s ease;
+}
+
+.landing-btn-primary:hover::before {
+  left: 100%;
+}
+
+.landing-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 40px rgba(129, 140, 248, 0.4),
+    0 0 80px rgba(129, 140, 248, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+}
+
+.landing-btn-secondary {
+  background: transparent;
+  color: var(--landing-heading);
+  border: 1px solid var(--landing-border-strong);
+  backdrop-filter: blur(8px);
+}
+
+.landing-btn-secondary:hover {
+  border-color: var(--landing-accent);
+  color: var(--landing-accent);
+  background: var(--landing-accent-glow);
+  box-shadow: 0 0 30px rgba(129, 140, 248, 0.1);
+  text-decoration: none;
+}
+
+/* ── Glass effect ── */
+.landing-glass {
+  background: rgba(20, 20, 32, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--landing-border);
+}
+
+/* ── Gradient text ── */
+.landing-gradient-text {
+  background: var(--landing-accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Section divider fade ── */
+.landing-section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--landing-border-strong) 50%,
+    transparent 100%
+  );
+}
+
+/* ── Floating ambient orbs (used as decorative background) ── */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-15px, 15px) scale(0.95);
+  }
+}
+
+@keyframes float-slower {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-25px, 25px) scale(1.04);
+  }
+}

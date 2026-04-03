@@ -1,143 +1,160 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { api, ApiError } from '../../api/client'
-import type { AccountConnectionResponse, PlatformType } from '../../api/types'
+import { useCallback, useEffect, useRef, useState } from "react";
+import { api, ApiError } from "../../api/client";
+import type { AccountConnectionResponse, PlatformType } from "../../api/types";
 import {
   loadFacebookSdk,
   launchWhatsAppSignup,
   type WhatsAppSignupEvent,
-} from '../../util/facebook-sdk'
-import { formatShortDate } from '../../util/format'
-import './Connections.css'
+} from "../../util/facebook-sdk";
+import { formatShortDate } from "../../util/format";
+import "./Connections.css";
 
-const REDIRECT_PLATFORMS: PlatformType[] = ['META', 'INSTAGRAM']
+const REDIRECT_PLATFORMS: PlatformType[] = ["META", "INSTAGRAM"];
 
-const WA_APP_ID = import.meta.env.VITE_WHATSAPP_APP_ID as string | undefined
-const WA_CONFIG_ID = import.meta.env.VITE_WHATSAPP_CONFIG_ID as string | undefined
+const WA_APP_ID = import.meta.env.VITE_WHATSAPP_APP_ID as string | undefined;
+const WA_CONFIG_ID = import.meta.env.VITE_WHATSAPP_CONFIG_ID as
+  | string
+  | undefined;
 
 function redirectUriFor(platform: PlatformType): string {
-  return `${window.location.origin}/oauth/callback/${platform}`
+  return `${window.location.origin}/app/oauth/callback/${platform}`;
 }
 
 function platformLabel(p: PlatformType): string {
   switch (p) {
-    case 'META':
-      return 'Meta (Pages)'
-    case 'INSTAGRAM':
-      return 'Instagram'
-    case 'WHATSAPP':
-      return 'WhatsApp'
+    case "META":
+      return "Meta (Pages)";
+    case "INSTAGRAM":
+      return "Instagram";
+    case "WHATSAPP":
+      return "WhatsApp";
     default:
-      return p
+      return p;
   }
 }
 
 export function Connections() {
-  const [connections, setConnections] = useState<AccountConnectionResponse[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [busyId, setBusyId] = useState<string | null>(null)
-  const [whatsAppBusy, setWhatsAppBusy] = useState(false)
+  const [connections, setConnections] = useState<AccountConnectionResponse[]>(
+    [],
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [whatsAppBusy, setWhatsAppBusy] = useState(false);
 
   const signupDataRef = useRef<{
-    phone_number_id?: string
-    waba_id?: string
-  } | null>(null)
+    phone_number_id?: string;
+    waba_id?: string;
+  } | null>(null);
 
   const load = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const list = await api.get<AccountConnectionResponse[]>('/oauth/connections')
-      setConnections(list)
+      const list =
+        await api.get<AccountConnectionResponse[]>("/oauth/connections");
+      setConnections(list);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Failed to load connections')
+      setError(
+        e instanceof ApiError ? e.message : "Failed to load connections",
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    void load()
-  }, [load])
+    void load();
+  }, [load]);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
-      if (!event.origin.endsWith('facebook.com')) return
+      if (!event.origin.endsWith("facebook.com")) return;
       try {
-        const data = JSON.parse(event.data) as WhatsAppSignupEvent
-        if (data.type === 'WA_EMBEDDED_SIGNUP' && data.event !== 'CANCEL') {
+        const data = JSON.parse(event.data) as WhatsAppSignupEvent;
+        if (data.type === "WA_EMBEDDED_SIGNUP" && data.event !== "CANCEL") {
           signupDataRef.current = {
             phone_number_id: data.data.phone_number_id,
             waba_id: data.data.waba_id,
-          }
+          };
         }
       } catch {
         // not a JSON message from Facebook, ignore
       }
     }
-    window.addEventListener('message', onMessage)
-    return () => window.removeEventListener('message', onMessage)
-  }, [])
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
 
   async function handleConnect(platform: PlatformType) {
-    setError(null)
+    setError(null);
     try {
-      const uri = redirectUriFor(platform)
+      const uri = redirectUriFor(platform);
       const res = await api.get<{ url: string }>(
         `/oauth/${platform}/auth-url?redirectUri=${encodeURIComponent(uri)}`,
-      )
-      window.location.href = res.url
+      );
+      window.location.href = res.url;
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not start OAuth')
+      setError(e instanceof ApiError ? e.message : "Could not start OAuth");
     }
   }
 
   async function handleWhatsAppConnect() {
     if (!WA_APP_ID || !WA_CONFIG_ID) {
-      setError('WhatsApp app ID or config ID is not configured')
-      return
+      setError("WhatsApp app ID or config ID is not configured");
+      return;
     }
-    setError(null)
-    setWhatsAppBusy(true)
-    signupDataRef.current = null
+    setError(null);
+    setWhatsAppBusy(true);
+    signupDataRef.current = null;
 
     try {
-      await loadFacebookSdk(WA_APP_ID)
-      const code = await launchWhatsAppSignup(WA_CONFIG_ID)
+      await loadFacebookSdk(WA_APP_ID);
+      const code = await launchWhatsAppSignup(WA_CONFIG_ID);
 
-      const phoneNumberId = signupDataRef.current?.phone_number_id
-      const wabaId = signupDataRef.current?.waba_id
+      // The ref is mutated by the 'message' event listener during the await above,
+      // so we re-read it here. TypeScript control-flow analysis can't track this.
+      const signupData = signupDataRef.current as {
+        phone_number_id?: string;
+        waba_id?: string;
+      } | null;
+      const phoneNumberId = signupData?.phone_number_id;
+      const wabaId = signupData?.waba_id;
 
       if (!phoneNumberId || !wabaId) {
-        setError('WhatsApp signup completed but asset IDs were not received. Please try again.')
-        return
+        setError(
+          "WhatsApp signup completed but asset IDs were not received. Please try again.",
+        );
+        return;
       }
 
-      await api.post<AccountConnectionResponse[]>('/oauth/WHATSAPP/callback', {
+      await api.post<AccountConnectionResponse[]>("/oauth/WHATSAPP/callback", {
         code,
-        redirectUri: '',
+        redirectUri: "",
         phoneNumberId,
         wabaId,
-      })
+      });
 
-      await load()
+      await load();
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'WhatsApp connection failed')
+      setError(
+        e instanceof ApiError ? e.message : "WhatsApp connection failed",
+      );
     } finally {
-      setWhatsAppBusy(false)
+      setWhatsAppBusy(false);
     }
   }
 
   async function handleDisconnect(id: string) {
-    setBusyId(id)
-    setError(null)
+    setBusyId(id);
+    setError(null);
     try {
-      await api.delete(`/oauth/connections/${id}`)
-      await load()
+      await api.delete(`/oauth/connections/${id}`);
+      await load();
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Failed to disconnect')
+      setError(e instanceof ApiError ? e.message : "Failed to disconnect");
     } finally {
-      setBusyId(null)
+      setBusyId(null);
     }
   }
 
@@ -180,7 +197,7 @@ export function Connections() {
             disabled={whatsAppBusy}
             onClick={() => void handleWhatsAppConnect()}
           >
-            {whatsAppBusy ? 'Connecting…' : 'Connect WhatsApp'}
+            {whatsAppBusy ? "Connecting…" : "Connect WhatsApp"}
           </button>
         </div>
       </section>
@@ -196,7 +213,9 @@ export function Connections() {
             {connections.map((c) => (
               <li key={c.id} className="conn-row">
                 <div className="conn-row-main">
-                  <span className="conn-platform">{platformLabel(c.platform)}</span>
+                  <span className="conn-platform">
+                    {platformLabel(c.platform)}
+                  </span>
                   <span className="conn-external" title={c.externalAccountId}>
                     ID {c.externalAccountId}
                   </span>
@@ -210,7 +229,7 @@ export function Connections() {
                   disabled={busyId === c.id}
                   onClick={() => void handleDisconnect(c.id)}
                 >
-                  {busyId === c.id ? 'Removing…' : 'Disconnect'}
+                  {busyId === c.id ? "Removing…" : "Disconnect"}
                 </button>
               </li>
             ))}
@@ -218,5 +237,5 @@ export function Connections() {
         )}
       </section>
     </div>
-  )
+  );
 }

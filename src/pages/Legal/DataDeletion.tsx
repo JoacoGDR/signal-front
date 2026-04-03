@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import './Legal.css'
+import { Link } from "react-router-dom";
+import "./Legal.css";
 
 export function DataDeletion() {
   return (
@@ -24,11 +24,13 @@ export function DataDeletion() {
       </p>
       <ol>
         <li>
-          Go to <strong>Facebook Settings</strong> &rarr;{' '}
-          <strong>Security and Login</strong> &rarr;{' '}
+          Go to <strong>Facebook Settings</strong> &rarr;{" "}
+          <strong>Security and Login</strong> &rarr;{" "}
           <strong>Business Integrations</strong>.
         </li>
-        <li>Find <strong>BoxLead</strong> in the list of active integrations.</li>
+        <li>
+          Find <strong>BoxLead</strong> in the list of active integrations.
+        </li>
         <li>
           Click <strong>Remove</strong> to disconnect BoxLead from your Facebook
           account.
@@ -46,7 +48,7 @@ export function DataDeletion() {
       </p>
       <div className="legal-contact">
         <p>
-          <strong>Email:</strong>{' '}
+          <strong>Email:</strong>{" "}
           <a href="mailto:support@boxlead.io">support@boxlead.io</a>
         </p>
         <p>
@@ -64,7 +66,9 @@ export function DataDeletion() {
         data from our PostgreSQL database within <strong>30 days</strong>:
       </p>
       <ul>
-        <li>All <strong>Leads</strong> associated with your account.</li>
+        <li>
+          All <strong>Leads</strong> associated with your account.
+        </li>
         <li>
           All <strong>Conversations</strong> and their message history.
         </li>
@@ -80,11 +84,11 @@ export function DataDeletion() {
 
       <h2>Questions?</h2>
       <p>
-        For more information about how we handle your data, see our{' '}
+        For more information about how we handle your data, see our{" "}
         <Link to="/privacy-policy">Privacy Policy</Link>. If you have any
-        questions about the deletion process, contact us at{' '}
+        questions about the deletion process, contact us at{" "}
         <a href="mailto:support@boxlead.app">support@boxlead.io</a>.
       </p>
     </div>
-  )
+  );
 }

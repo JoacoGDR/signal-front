@@ -6,8 +6,8 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from 'react'
-import { useNavigate } from 'react-router-dom'
+} from "react";
+import { useNavigate } from "react-router-dom";
 import {
   api,
   ApiError,
@@ -15,82 +15,82 @@ import {
   getStoredToken,
   getStoredUser,
   persistAuth,
-} from '../api/client'
-import type { AuthUser, LoginRequest, RegisterRequest } from '../api/types'
+} from "../api/client";
+import type { AuthUser, LoginRequest, RegisterRequest } from "../api/types";
 
 type AuthContextValue = {
-  token: string | null
-  user: AuthUser | null
-  login: (body: LoginRequest) => Promise<void>
-  register: (body: RegisterRequest) => Promise<void>
-  logout: () => void
-  isLoading: boolean
-  error: string | null
-  clearError: () => void
-}
+  token: string | null;
+  user: AuthUser | null;
+  login: (body: LoginRequest) => Promise<void>;
+  register: (body: RegisterRequest) => Promise<void>;
+  logout: () => void;
+  isLoading: boolean;
+  error: string | null;
+  clearError: () => void;
+};
 
-const AuthContext = createContext<AuthContextValue | null>(null)
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const navigate = useNavigate()
-  const [token, setToken] = useState<string | null>(() => getStoredToken())
+  const navigate = useNavigate();
+  const [token, setToken] = useState<string | null>(() => getStoredToken());
   const [user, setUser] = useState<AuthUser | null>(() => {
-    const u = getStoredUser()
-    return u ? { userId: u.userId, email: u.email } : null
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+    const u = getStoredUser();
+    return u ? { userId: u.userId, email: u.email } : null;
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const clearError = useCallback(() => setError(null), [])
+  const clearError = useCallback(() => setError(null), []);
 
   const login = useCallback(
     async (body: LoginRequest) => {
-      setError(null)
-      setIsLoading(true)
+      setError(null);
+      setIsLoading(true);
       try {
-        const res = await api.login(body)
-        persistAuth(res)
-        setToken(res.token)
-        setUser({ userId: res.userId, email: res.email })
-        navigate('/inbox', { replace: true })
+        const res = await api.login(body);
+        persistAuth(res);
+        setToken(res.token);
+        setUser({ userId: res.userId, email: res.email });
+        navigate("/app/inbox", { replace: true });
       } catch (e) {
-        const msg = e instanceof ApiError ? e.message : 'Login failed'
-        setError(msg)
-        throw e
+        const msg = e instanceof ApiError ? e.message : "Login failed";
+        setError(msg);
+        throw e;
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     },
     [navigate],
-  )
+  );
 
   const register = useCallback(
     async (body: RegisterRequest) => {
-      setError(null)
-      setIsLoading(true)
+      setError(null);
+      setIsLoading(true);
       try {
-        const res = await api.register(body)
-        persistAuth(res)
-        setToken(res.token)
-        setUser({ userId: res.userId, email: res.email })
-        navigate('/inbox', { replace: true })
+        const res = await api.register(body);
+        persistAuth(res);
+        setToken(res.token);
+        setUser({ userId: res.userId, email: res.email });
+        navigate("/app/inbox", { replace: true });
       } catch (e) {
-        const msg = e instanceof ApiError ? e.message : 'Registration failed'
-        setError(msg)
-        throw e
+        const msg = e instanceof ApiError ? e.message : "Registration failed";
+        setError(msg);
+        throw e;
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     },
     [navigate],
-  )
+  );
 
   const logout = useCallback(() => {
-    clearAuth()
-    setToken(null)
-    setUser(null)
-    navigate('/login', { replace: true })
-  }, [navigate])
+    clearAuth();
+    setToken(null);
+    setUser(null);
+    navigate("/login", { replace: true });
+  }, [navigate]);
 
   const value = useMemo(
     () => ({
@@ -104,15 +104,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       clearError,
     }),
     [token, user, login, register, logout, isLoading, error, clearError],
-  )
+  );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextValue {
-  const ctx = useContext(AuthContext)
+  const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error('useAuth must be used within AuthProvider')
+    throw new Error("useAuth must be used within AuthProvider");
   }
-  return ctx
+  return ctx;
 }

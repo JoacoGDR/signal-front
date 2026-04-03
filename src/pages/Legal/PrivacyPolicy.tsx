@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import './Legal.css'
+import { Link } from "react-router-dom";
+import "./Legal.css";
 
 export function PrivacyPolicy() {
   return (
@@ -13,14 +13,15 @@ export function PrivacyPolicy() {
       <p>
         BoxLead ("we", "us", or "our") operates a customer relationship
         management (CRM) platform that helps businesses manage conversations and
-        leads from Facebook and Instagram. This Privacy Policy explains what data
-        we collect, how we use it, and your rights regarding that data.
+        leads from Facebook and Instagram. This Privacy Policy explains what
+        data we collect, how we use it, and your rights regarding that data.
       </p>
 
       <h2>1. Data We Collect</h2>
       <p>
         When you connect your Facebook Page or Instagram Professional account to
-        BoxLead, we collect the following information through the Meta Graph API:
+        BoxLead, we collect the following information through the Meta Graph
+        API:
       </p>
       <ul>
         <li>
@@ -50,16 +51,16 @@ export function PrivacyPolicy() {
       </p>
       <ul>
         <li>
-          Display incoming messages in your BoxLead dashboard so you can view and
-          reply to customers from one place.
+          Display incoming messages in your BoxLead dashboard so you can view
+          and reply to customers from one place.
         </li>
         <li>
           Organize contacts into leads and conversations to help you track
           customer relationships.
         </li>
         <li>
-          Send replies on your behalf through the Meta Graph API when you compose
-          a response in BoxLead.
+          Send replies on your behalf through the Meta Graph API when you
+          compose a response in BoxLead.
         </li>
       </ul>
 
@@ -87,13 +88,13 @@ export function PrivacyPolicy() {
 
       <h2>4. Data Retention &amp; Deletion</h2>
       <p>
-        We retain your data for as long as your BoxLead account is active and you
-        maintain connected integrations. You may request <strong>complete
-        deletion</strong> of all your data at any time by:
+        We retain your data for as long as your BoxLead account is active and
+        you maintain connected integrations. You may request{" "}
+        <strong>complete deletion</strong> of all your data at any time by:
       </p>
       <ol>
         <li>
-          Removing the BoxLead integration from your{' '}
+          Removing the BoxLead integration from your{" "}
           <strong>Facebook Business Integrations</strong> settings.
         </li>
         <li>
@@ -107,7 +108,7 @@ export function PrivacyPolicy() {
         30 days.
       </p>
       <p>
-        For detailed step-by-step instructions, visit our{' '}
+        For detailed step-by-step instructions, visit our{" "}
         <Link to="/data-deletion">Data Deletion</Link> page.
       </p>
 
@@ -127,10 +128,10 @@ export function PrivacyPolicy() {
 
       <div className="legal-contact">
         <p>
-          <strong>Questions?</strong> Contact us at{' '}
+          <strong>Questions?</strong> Contact us at{" "}
           <a href="mailto:support@boxlead.io">support@boxlead.app</a>
         </p>
       </div>
     </div>
-  )
+  );
 }
