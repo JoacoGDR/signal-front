@@ -19,7 +19,7 @@ export function Header() {
       className={`landing-header${scrolled ? " header-scrolled" : ""}`}
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
     >
       <div className="landing-header-inner">
         <Link to="/" className="header-logo">

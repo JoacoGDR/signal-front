@@ -65,7 +65,7 @@ function AnimatedCounter({
     if (isInView) {
       const controls = animate(count, target, {
         duration: 2,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as const,
       });
       return controls.stop;
     }
@@ -102,7 +102,7 @@ export function BenefitsSection() {
           initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
         >
           <span className="landing-section-label">Beneficios</span>
           <h2 className="landing-section-title">

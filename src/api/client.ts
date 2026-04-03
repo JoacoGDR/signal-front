@@ -53,7 +53,11 @@ export function clearAuth(): void {
 function clearAuthAndGoLogin(): void {
   clearAuth();
   const p = window.location.pathname;
-  if (!p.startsWith("/login") && !p.startsWith("/register")) {
+  // Only redirect to /login from protected routes (/app/*).
+  // Public routes (/, /login, /register, /privacy-policy, etc.) should never be
+  // forcibly redirected, otherwise a 401 from any background API call would kick
+  // the user away from the landing page.
+  if (p.startsWith("/app")) {
     window.location.assign("/login");
   }
 }
