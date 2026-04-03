@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, ApiError } from "../../api/client";
-import type { AccountConnectionResponse, PlatformType } from "../../api/types";
+import type {
+  AccountConnectionResponse,
+  PlatformType,
+  WhatsAppConfig,
+} from "../../api/types";
 import {
   loadFacebookSdk,
   launchWhatsAppSignup,
@@ -11,11 +15,6 @@ import { redirectUriFor } from "../../util/oauth";
 import "./Connections.css";
 
 const REDIRECT_PLATFORMS: PlatformType[] = ["META", "INSTAGRAM"];
-
-const WA_APP_ID = import.meta.env.VITE_WHATSAPP_APP_ID as string | undefined;
-const WA_CONFIG_ID = import.meta.env.VITE_WHATSAPP_CONFIG_ID as
-  | string
-  | undefined;
 
 function platformLabel(p: PlatformType): string {
   switch (p) {
@@ -38,6 +37,7 @@ export function Connections() {
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [whatsAppBusy, setWhatsAppBusy] = useState(false);
+  const [waConfig, setWaConfig] = useState<WhatsAppConfig | null>(null);
 
   const signupDataRef = useRef<{
     phone_number_id?: string;
@@ -62,6 +62,12 @@ export function Connections() {
 
   useEffect(() => {
     void load();
+    void api
+      .get<WhatsAppConfig>("/oauth/whatsapp/config")
+      .then(setWaConfig)
+      .catch(() => {
+        /* WhatsApp config unavailable; button will stay disabled */
+      });
   }, [load]);
 
   useEffect(() => {
@@ -97,7 +103,7 @@ export function Connections() {
   }
 
   async function handleWhatsAppConnect() {
-    if (!WA_APP_ID || !WA_CONFIG_ID) {
+    if (!waConfig) {
       setError("WhatsApp app ID or config ID is not configured");
       return;
     }
@@ -106,8 +112,8 @@ export function Connections() {
     signupDataRef.current = null;
 
     try {
-      await loadFacebookSdk(WA_APP_ID);
-      const code = await launchWhatsAppSignup(WA_CONFIG_ID);
+      await loadFacebookSdk(waConfig.appId);
+      const code = await launchWhatsAppSignup(waConfig.configId);
 
       // The ref is mutated by the 'message' event listener during the await above,
       // so we re-read it here. TypeScript control-flow analysis can't track this.
@@ -191,7 +197,7 @@ export function Connections() {
           <button
             type="button"
             className="conn-connect-btn"
-            disabled={whatsAppBusy}
+            disabled={whatsAppBusy || !waConfig}
             onClick={() => void handleWhatsAppConnect()}
           >
             {whatsAppBusy ? "Connecting…" : "Connect WhatsApp"}

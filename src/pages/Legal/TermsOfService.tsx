@@ -125,7 +125,7 @@ export function TermsOfService() {
       <div className="legal-contact">
         <p>
           <strong>Questions?</strong> Contact us at{" "}
-          <a href="mailto:support@boxlead.io">support@boxlead.app</a>
+          <a href="mailto:support@boxlead.app">support@boxlead.app</a>
         </p>
       </div>
     </div>

@@ -87,7 +87,7 @@ export function DataDeletion() {
         For more information about how we handle your data, see our{" "}
         <Link to="/privacy-policy">Privacy Policy</Link>. If you have any
         questions about the deletion process, contact us at{" "}
-        <a href="mailto:support@boxlead.app">support@boxlead.io</a>.
+        <a href="mailto:support@boxlead.app">support@boxlead.app</a>.
       </p>
     </div>
   );

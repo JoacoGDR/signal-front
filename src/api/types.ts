@@ -85,3 +85,8 @@ export type OAuthCallbackRequest = {
   phoneNumberId?: string;
   wabaId?: string;
 };
+
+export type WhatsAppConfig = {
+  appId: string;
+  configId: string;
+};
