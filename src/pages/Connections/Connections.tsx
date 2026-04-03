@@ -7,6 +7,7 @@ import {
   type WhatsAppSignupEvent,
 } from "../../util/facebook-sdk";
 import { formatShortDate } from "../../util/format";
+import { redirectUriFor } from "../../util/oauth";
 import "./Connections.css";
 
 const REDIRECT_PLATFORMS: PlatformType[] = ["META", "INSTAGRAM"];
@@ -15,10 +16,6 @@ const WA_APP_ID = import.meta.env.VITE_WHATSAPP_APP_ID as string | undefined;
 const WA_CONFIG_ID = import.meta.env.VITE_WHATSAPP_CONFIG_ID as
   | string
   | undefined;
-
-function redirectUriFor(platform: PlatformType): string {
-  return `${window.location.origin}/app/oauth/callback/${platform}`;
-}
 
 function platformLabel(p: PlatformType): string {
   switch (p) {

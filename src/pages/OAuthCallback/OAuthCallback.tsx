@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { api, ApiError } from "../../api/client";
 import type { AccountConnectionResponse, PlatformType } from "../../api/types";
+import { redirectUriFor } from "../../util/oauth";
 import "./OAuthCallback.css";
 
 const ALLOWED: PlatformType[] = ["META", "INSTAGRAM", "WHATSAPP"];
@@ -49,7 +50,7 @@ export function OAuthCallback() {
       return;
     }
 
-    const redirectUri = `${window.location.origin}/oauth/callback/${platform}`;
+    const redirectUri = redirectUriFor(platform);
     let cancelled = false;
     let redirectTimer: ReturnType<typeof setTimeout> | undefined;
 
