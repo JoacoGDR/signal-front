@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import {
+  WhatsAppIcon,
+  InstagramIcon,
+  MessengerIcon,
+} from "../icons/PlatformIcons";
 import "./HeroSection.css";
 
 const dashboardRows = [
@@ -201,16 +206,7 @@ export function HeroSection() {
                 damping: 14,
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
-                <path
-                  d="M12 2C6.477 2 2 6.477 2 12c0 1.82.487 3.53 1.338 5.002L2 22l5.233-1.237A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"
-                  fill="#25D366"
-                />
-                <path
-                  d="M17.3 14.3c-.3-.15-1.75-.85-2-.95s-.45-.15-.65.15c-.2.3-.75.95-.9 1.15-.15.2-.35.2-.65.05-.3-.15-1.25-.45-2.35-1.45-.85-.75-1.45-1.7-1.6-2-.15-.3 0-.45.15-.6.1-.1.25-.3.35-.45.1-.15.15-.25.25-.4.1-.2.05-.35 0-.5-.05-.15-.65-1.55-.85-2.1-.25-.55-.45-.5-.45-.5h-.55c-.2 0-.5.05-.75.35s-1 .95-1 2.35 1 2.7 1.15 2.9c.15.2 2 3.05 4.8 4.25.65.3 1.2.45 1.6.6.65.2 1.25.2 1.75.1.55-.1 1.65-.65 1.85-1.3.25-.65.25-1.2.15-1.3-.05-.15-.25-.2-.55-.35z"
-                  fill="#fff"
-                />
-              </svg>
+              <WhatsAppIcon width={22} height={22} />
             </motion.div>
             <motion.div
               className="hero-channel-float hero-float-instagram"
@@ -223,34 +219,7 @@ export function HeroSection() {
                 damping: 14,
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
-                <defs>
-                  <linearGradient id="ig-float" x1="3" y1="21" x2="21" y2="3">
-                    <stop offset="0%" stopColor="#f09433" />
-                    <stop offset="25%" stopColor="#e6683c" />
-                    <stop offset="50%" stopColor="#dc2743" />
-                    <stop offset="75%" stopColor="#cc2366" />
-                    <stop offset="100%" stopColor="#bc1888" />
-                  </linearGradient>
-                </defs>
-                <rect
-                  x="2"
-                  y="2"
-                  width="20"
-                  height="20"
-                  rx="6"
-                  fill="url(#ig-float)"
-                />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="4.5"
-                  stroke="#fff"
-                  strokeWidth="1.8"
-                  fill="none"
-                />
-                <circle cx="17.5" cy="6.5" r="1.4" fill="#fff" />
-              </svg>
+              <InstagramIcon width={22} height={22} />
             </motion.div>
             <motion.div
               className="hero-channel-float hero-float-messenger"
@@ -263,26 +232,7 @@ export function HeroSection() {
                 damping: 14,
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
-                <defs>
-                  <linearGradient id="msg-float" x1="3" y1="21" x2="21" y2="3">
-                    <stop offset="0%" stopColor="#0099ff" />
-                    <stop offset="100%" stopColor="#a033ff" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M12 2C6.477 2 2 6.15 2 11.25c0 2.9 1.45 5.5 3.75 7.2V22l3.4-1.85c.9.25 1.85.35 2.85.35 5.523 0 10-4.15 10-9.25S17.523 2 12 2z"
-                  fill="url(#msg-float)"
-                />
-                <path
-                  d="M7 14l4.25-4.5 2.25 2.25 4-4.5"
-                  stroke="#fff"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </svg>
+              <MessengerIcon width={22} height={22} />
             </motion.div>
           </motion.div>
         </motion.div>
