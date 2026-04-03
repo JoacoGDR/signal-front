@@ -4,7 +4,7 @@ import { api, ApiError } from '../../api/client'
 import type { AccountConnectionResponse, PlatformType } from '../../api/types'
 import './OAuthCallback.css'
 
-const ALLOWED: PlatformType[] = ['META', 'INSTAGRAM']
+const ALLOWED: PlatformType[] = ['META', 'INSTAGRAM', 'WHATSAPP']
 
 function isPlatform(p: string | undefined): p is PlatformType {
   return p !== undefined && (ALLOWED as string[]).includes(p)

@@ -82,4 +82,6 @@ export type AccountConnectionResponse = {
 export type OAuthCallbackRequest = {
   code: string
   redirectUri: string
+  phoneNumberId?: string
+  wabaId?: string
 }

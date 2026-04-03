@@ -1,13 +1,34 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { api, ApiError } from '../../api/client'
 import type { AccountConnectionResponse, PlatformType } from '../../api/types'
+import {
+  loadFacebookSdk,
+  launchWhatsAppSignup,
+  type WhatsAppSignupEvent,
+} from '../../util/facebook-sdk'
 import { formatShortDate } from '../../util/format'
 import './Connections.css'
 
-const CONNECT_PLATFORMS: PlatformType[] = ['META', 'INSTAGRAM']
+const REDIRECT_PLATFORMS: PlatformType[] = ['META', 'INSTAGRAM']
+
+const WA_APP_ID = import.meta.env.VITE_WHATSAPP_APP_ID as string | undefined
+const WA_CONFIG_ID = import.meta.env.VITE_WHATSAPP_CONFIG_ID as string | undefined
 
 function redirectUriFor(platform: PlatformType): string {
   return `${window.location.origin}/oauth/callback/${platform}`
+}
+
+function platformLabel(p: PlatformType): string {
+  switch (p) {
+    case 'META':
+      return 'Meta (Pages)'
+    case 'INSTAGRAM':
+      return 'Instagram'
+    case 'WHATSAPP':
+      return 'WhatsApp'
+    default:
+      return p
+  }
 }
 
 export function Connections() {
@@ -15,6 +36,12 @@ export function Connections() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [whatsAppBusy, setWhatsAppBusy] = useState(false)
+
+  const signupDataRef = useRef<{
+    phone_number_id?: string
+    waba_id?: string
+  } | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -33,6 +60,25 @@ export function Connections() {
     void load()
   }, [load])
 
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      if (!event.origin.endsWith('facebook.com')) return
+      try {
+        const data = JSON.parse(event.data) as WhatsAppSignupEvent
+        if (data.type === 'WA_EMBEDDED_SIGNUP' && data.event !== 'CANCEL') {
+          signupDataRef.current = {
+            phone_number_id: data.data.phone_number_id,
+            waba_id: data.data.waba_id,
+          }
+        }
+      } catch {
+        // not a JSON message from Facebook, ignore
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
   async function handleConnect(platform: PlatformType) {
     setError(null)
     try {
@@ -43,6 +89,42 @@ export function Connections() {
       window.location.href = res.url
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Could not start OAuth')
+    }
+  }
+
+  async function handleWhatsAppConnect() {
+    if (!WA_APP_ID || !WA_CONFIG_ID) {
+      setError('WhatsApp app ID or config ID is not configured')
+      return
+    }
+    setError(null)
+    setWhatsAppBusy(true)
+    signupDataRef.current = null
+
+    try {
+      await loadFacebookSdk(WA_APP_ID)
+      const code = await launchWhatsAppSignup(WA_CONFIG_ID)
+
+      const phoneNumberId = signupDataRef.current?.phone_number_id
+      const wabaId = signupDataRef.current?.waba_id
+
+      if (!phoneNumberId || !wabaId) {
+        setError('WhatsApp signup completed but asset IDs were not received. Please try again.')
+        return
+      }
+
+      await api.post<AccountConnectionResponse[]>('/oauth/WHATSAPP/callback', {
+        code,
+        redirectUri: '',
+        phoneNumberId,
+        wabaId,
+      })
+
+      await load()
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'WhatsApp connection failed')
+    } finally {
+      setWhatsAppBusy(false)
     }
   }
 
@@ -64,8 +146,8 @@ export function Connections() {
       <header className="page-header">
         <h1>Connected accounts</h1>
         <p className="page-header-desc">
-          Link Meta Pages and Instagram Business accounts so webhooks and messages
-          route to your workspace.
+          Link Meta Pages, Instagram Business accounts, and WhatsApp Business
+          accounts so webhooks and messages route to your workspace.
         </p>
       </header>
 
@@ -78,27 +160,28 @@ export function Connections() {
       <section className="conn-section panel">
         <h2 className="conn-section-title">Add a channel</h2>
         <p className="conn-section-desc">
-          You will be redirected to Meta to approve access. Use the same redirect URL
-          in your Meta app settings:{' '}
-          <code className="conn-code">
-            {typeof window !== 'undefined'
-              ? `${window.location.origin}/oauth/callback/META`
-              : ''}
-          </code>{' '}
-          (and the Instagram variant with <code className="conn-code">INSTAGRAM</code>{' '}
-          if you use a separate flow).
+          For Meta and Instagram you will be redirected to approve access. For
+          WhatsApp, a popup will guide you through the Embedded Signup flow.
         </p>
         <div className="conn-actions">
-          {CONNECT_PLATFORMS.map((p) => (
+          {REDIRECT_PLATFORMS.map((p) => (
             <button
               key={p}
               type="button"
               className="conn-connect-btn"
               onClick={() => void handleConnect(p)}
             >
-              Connect {p === 'META' ? 'Meta (Pages)' : 'Instagram'}
+              Connect {platformLabel(p)}
             </button>
           ))}
+          <button
+            type="button"
+            className="conn-connect-btn"
+            disabled={whatsAppBusy}
+            onClick={() => void handleWhatsAppConnect()}
+          >
+            {whatsAppBusy ? 'Connecting…' : 'Connect WhatsApp'}
+          </button>
         </div>
       </section>
 
@@ -113,7 +196,7 @@ export function Connections() {
             {connections.map((c) => (
               <li key={c.id} className="conn-row">
                 <div className="conn-row-main">
-                  <span className="conn-platform">{c.platform}</span>
+                  <span className="conn-platform">{platformLabel(c.platform)}</span>
                   <span className="conn-external" title={c.externalAccountId}>
                     ID {c.externalAccountId}
                   </span>
