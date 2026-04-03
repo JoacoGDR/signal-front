@@ -1,42 +1,44 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { api, ApiError } from '../../api/client'
-import type { ConversationResponse, LeadResponse } from '../../api/types'
-import { ConversationList } from './ConversationList'
-import { MessageThread } from './MessageThread'
-import './Inbox.css'
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { api, ApiError } from "../../api/client";
+import type { ConversationResponse, LeadResponse } from "../../api/types";
+import { ConversationList } from "./ConversationList";
+import { MessageThread } from "./MessageThread";
+import "./Inbox.css";
 
 export function Inbox() {
-  const [conversations, setConversations] = useState<ConversationResponse[]>([])
-  const [leads, setLeads] = useState<LeadResponse[]>([])
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [conversations, setConversations] = useState<ConversationResponse[]>(
+    [],
+  );
+  const [leads, setLeads] = useState<LeadResponse[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
-    setLoadError(null)
+    setLoadError(null);
     try {
       const [c, l] = await Promise.all([
-        api.get<ConversationResponse[]>('/conversations'),
-        api.get<LeadResponse[]>('/leads'),
-      ])
-      setConversations(c)
-      setLeads(l)
+        api.get<ConversationResponse[]>("/conversations"),
+        api.get<LeadResponse[]>("/leads"),
+      ]);
+      setConversations(c);
+      setLeads(l);
     } catch (e) {
-      setLoadError(e instanceof ApiError ? e.message : 'Failed to load inbox')
+      setLoadError(e instanceof ApiError ? e.message : "Failed to load inbox");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- load inbox on mount
-    void loadData()
-  }, [loadData])
+    void loadData();
+  }, [loadData]);
 
   const leadsById = useMemo(() => {
-    const m: Record<string, LeadResponse> = {}
+    const m: Record<string, LeadResponse> = {};
     for (const lead of leads) {
-      m[lead.id] = lead
+      m[lead.id] = lead;
     }
-    return m
-  }, [leads])
+    return m;
+  }, [leads]);
 
   return (
     <div className="page-inbox">
@@ -69,5 +71,5 @@ export function Inbox() {
         </section>
       </div>
     </div>
-  )
+  );
 }

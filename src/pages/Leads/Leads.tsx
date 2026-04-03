@@ -1,50 +1,50 @@
-import { useCallback, useEffect, useState } from 'react'
-import { api, ApiError } from '../../api/client'
-import type { LeadResponse, LeadStatus } from '../../api/types'
-import { formatShortDate } from '../../util/format'
-import './Leads.css'
+import { useCallback, useEffect, useState } from "react";
+import { api, ApiError } from "../../api/client";
+import type { LeadResponse, LeadStatus } from "../../api/types";
+import { formatShortDate } from "../../util/format";
+import "./Leads.css";
 
-const STATUSES: (LeadStatus | '')[] = [
-  '',
-  'NEW',
-  'CONTACTED',
-  'QUALIFIED',
-  'LOST',
-  'CLOSED',
-]
+const STATUSES: (LeadStatus | "")[] = [
+  "",
+  "NEW",
+  "CONTACTED",
+  "QUALIFIED",
+  "LOST",
+  "CLOSED",
+];
 
 const STATUS_LABELS: Record<string, string> = {
-  '': 'All statuses',
-  NEW: 'New',
-  CONTACTED: 'Contacted',
-  QUALIFIED: 'Qualified',
-  LOST: 'Lost',
-  CLOSED: 'Closed',
-}
+  "": "All statuses",
+  NEW: "New",
+  CONTACTED: "Contacted",
+  QUALIFIED: "Qualified",
+  LOST: "Lost",
+  CLOSED: "Closed",
+};
 
 export function Leads() {
-  const [leads, setLeads] = useState<LeadResponse[]>([])
-  const [status, setStatus] = useState<LeadStatus | ''>('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [leads, setLeads] = useState<LeadResponse[]>([]);
+  const [status, setStatus] = useState<LeadStatus | "">("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const q = status ? `?status=${encodeURIComponent(status)}` : ''
-      const list = await api.get<LeadResponse[]>(`/leads${q}`)
-      setLeads(list)
+      const q = status ? `?status=${encodeURIComponent(status)}` : "";
+      const list = await api.get<LeadResponse[]>(`/leads${q}`);
+      setLeads(list);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Failed to load leads')
+      setError(e instanceof ApiError ? e.message : "Failed to load leads");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [status])
+  }, [status]);
 
   useEffect(() => {
-    void load()
-  }, [load])
+    void load();
+  }, [load]);
 
   return (
     <div className="page-leads">
@@ -60,10 +60,10 @@ export function Leads() {
           <select
             className="leads-filter-select"
             value={status}
-            onChange={(e) => setStatus(e.target.value as LeadStatus | '')}
+            onChange={(e) => setStatus(e.target.value as LeadStatus | "")}
           >
             {STATUSES.map((s) => (
-              <option key={s || 'all'} value={s}>
+              <option key={s || "all"} value={s}>
                 {STATUS_LABELS[s]}
               </option>
             ))}
@@ -72,7 +72,10 @@ export function Leads() {
       </header>
 
       {error ? (
-        <div className="page-banner page-banner-error leads-banner" role="alert">
+        <div
+          className="page-banner page-banner-error leads-banner"
+          role="alert"
+        >
           {error}
         </div>
       ) : null}
@@ -83,7 +86,8 @@ export function Leads() {
         <div className="leads-empty panel">
           <p>No leads match this filter.</p>
           <p className="leads-empty-hint">
-            Webhook events from Meta and Instagram will create leads automatically.
+            Webhook events from Meta and Instagram will create leads
+            automatically.
           </p>
         </div>
       ) : (
@@ -103,18 +107,20 @@ export function Leads() {
               {leads.map((lead) => (
                 <tr key={lead.id}>
                   <td className="leads-cell-strong">
-                    {lead.name?.trim() || '—'}
+                    {lead.name?.trim() || "—"}
                   </td>
                   <td>
                     <span className="leads-platform">{lead.platform}</span>
                   </td>
                   <td>
-                    <span className={`leads-badge leads-badge-${lead.status.toLowerCase()}`}>
+                    <span
+                      className={`leads-badge leads-badge-${lead.status.toLowerCase()}`}
+                    >
                       {lead.status}
                     </span>
                   </td>
-                  <td>{lead.email?.trim() || '—'}</td>
-                  <td>{lead.phone?.trim() || '—'}</td>
+                  <td>{lead.email?.trim() || "—"}</td>
+                  <td>{lead.phone?.trim() || "—"}</td>
                   <td className="leads-cell-muted">
                     {formatShortDate(lead.createdAt)}
                   </td>
@@ -125,5 +131,5 @@ export function Leads() {
         </div>
       )}
     </div>
-  )
+  );
 }

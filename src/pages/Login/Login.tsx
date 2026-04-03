@@ -1,22 +1,22 @@
-import { type FormEvent, useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import './Login.css'
+import { type FormEvent, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import "./Login.css";
 
 export function Login() {
-  const { token, login, isLoading, error, clearError } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { token, login, isLoading, error, clearError } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   if (token) {
-    return <Navigate to="/inbox" replace />
+    return <Navigate to="/app/inbox" replace />;
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    clearError()
+    e.preventDefault();
+    clearError();
     try {
-      await login({ email: email.trim(), password })
+      await login({ email: email.trim(), password });
     } catch {
       /* error surfaced via context */
     }
@@ -58,7 +58,7 @@ export function Login() {
             />
           </label>
           <button className="auth-submit" type="submit" disabled={isLoading}>
-            {isLoading ? 'Signing in…' : 'Sign in'}
+            {isLoading ? "Signing in…" : "Sign in"}
           </button>
         </form>
         <p className="auth-footer">
@@ -66,5 +66,5 @@ export function Login() {
         </p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,64 +1,64 @@
-import { type FormEvent, useCallback, useEffect, useState } from 'react'
-import { api, ApiError } from '../../api/client'
-import type { MessageResponse } from '../../api/types'
-import { formatShortDate } from '../../util/format'
-import './MessageThread.css'
+import { type FormEvent, useCallback, useEffect, useState } from "react";
+import { api, ApiError } from "../../api/client";
+import type { MessageResponse } from "../../api/types";
+import { formatShortDate } from "../../util/format";
+import "./MessageThread.css";
 
 type Props = {
-  conversationId: string | null
-  onSent?: () => void
-}
+  conversationId: string | null;
+  onSent?: () => void;
+};
 
 export function MessageThread({ conversationId, onSent }: Props) {
-  const [messages, setMessages] = useState<MessageResponse[]>([])
-  const [loading, setLoading] = useState(false)
-  const [sending, setSending] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [draft, setDraft] = useState('')
+  const [messages, setMessages] = useState<MessageResponse[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [draft, setDraft] = useState("");
 
   const loadMessages = useCallback(async () => {
     if (!conversationId) {
-      setMessages([])
-      return
+      setMessages([]);
+      return;
     }
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
       const list = await api.get<MessageResponse[]>(
         `/conversations/${conversationId}/messages`,
-      )
-      setMessages(list)
+      );
+      setMessages(list);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Failed to load messages')
+      setError(e instanceof ApiError ? e.message : "Failed to load messages");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [conversationId])
+  }, [conversationId]);
 
   useEffect(() => {
-    void loadMessages()
-  }, [loadMessages])
+    void loadMessages();
+  }, [loadMessages]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (!conversationId || !draft.trim()) return
-    setSending(true)
-    setError(null)
+    e.preventDefault();
+    if (!conversationId || !draft.trim()) return;
+    setSending(true);
+    setError(null);
     try {
       await api.post<MessageResponse>(
         `/conversations/${conversationId}/messages`,
         {
-          direction: 'OUTBOUND',
+          direction: "OUTBOUND",
           content: draft.trim(),
         },
-      )
-      setDraft('')
-      await loadMessages()
-      onSent?.()
+      );
+      setDraft("");
+      await loadMessages();
+      onSent?.();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Failed to send')
+      setError(err instanceof ApiError ? err.message : "Failed to send");
     } finally {
-      setSending(false)
+      setSending(false);
     }
   }
 
@@ -67,7 +67,7 @@ export function MessageThread({ conversationId, onSent }: Props) {
       <div className="message-thread message-thread-placeholder">
         <p>Select a conversation to read and reply to messages.</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -120,9 +120,9 @@ export function MessageThread({ conversationId, onSent }: Props) {
           className="message-compose-send"
           disabled={sending || !draft.trim()}
         >
-          {sending ? 'Sending…' : 'Send'}
+          {sending ? "Sending…" : "Send"}
         </button>
       </form>
     </div>
-  )
+  );
 }
