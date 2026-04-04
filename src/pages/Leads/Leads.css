@@ -72,6 +72,19 @@
   background: var(--signal-surface-elevated);
 }
 
+.leads-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.leads-row:hover {
+  background-color: var(--signal-accent-muted);
+}
+
+.leads-row:hover .leads-name-link {
+  color: var(--signal-accent);
+}
+
 .leads-table tr:last-child td {
   border-bottom: none;
 }

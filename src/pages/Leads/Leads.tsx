@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api, ApiError } from "../../api/client";
 import type { LeadResponse, LeadStatus } from "../../api/types";
 import { formatShortDate } from "../../util/format";
@@ -24,6 +24,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function Leads() {
+  const navigate = useNavigate();
   const [leads, setLeads] = useState<LeadResponse[]>([]);
   const [status, setStatus] = useState<LeadStatus | "">("");
   const [loading, setLoading] = useState(true);
@@ -106,7 +107,11 @@ export function Leads() {
             </thead>
             <tbody>
               {leads.map((lead) => (
-                <tr key={lead.id}>
+                <tr
+                  key={lead.id}
+                  className="leads-row"
+                  onClick={() => navigate(`/app/leads/${lead.id}`)}
+                >
                   <td className="leads-cell-strong">
                     <Link
                       to={`/app/leads/${lead.id}`}
