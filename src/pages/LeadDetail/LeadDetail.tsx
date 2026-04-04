@@ -52,7 +52,10 @@ export function LeadDetail() {
     if (!leadId) return;
     setStarting(true);
     try {
-      await api.post<ConversationResponse>("/conversations", { leadId });
+      await api.post<ConversationResponse>("/conversations", {
+        leadId,
+        platform: lead?.platform,
+      });
       await loadData();
     } catch (e) {
       setError(
