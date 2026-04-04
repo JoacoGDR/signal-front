@@ -103,14 +103,24 @@
   border-radius: var(--signal-radius-sm);
 }
 
-.conn-external {
-  font-family: var(--signal-mono);
-  font-size: 0.8125rem;
+.conn-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--signal-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 240px;
+  max-width: 280px;
+}
+
+.conn-external {
+  font-family: var(--signal-mono);
+  font-size: 0.75rem;
+  color: var(--signal-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
 }
 
 .conn-time {

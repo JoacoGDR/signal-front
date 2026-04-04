@@ -219,9 +219,17 @@ export function Connections() {
                   <span className="conn-platform">
                     {platformLabel(c.platform)}
                   </span>
-                  <span className="conn-external" title={c.externalAccountId}>
-                    ID {c.externalAccountId}
+                  <span className="conn-name">
+                    {c.displayName ?? c.externalAccountId}
                   </span>
+                  {c.displayName ? (
+                    <span
+                      className="conn-external"
+                      title={c.externalAccountId}
+                    >
+                      {c.externalAccountId}
+                    </span>
+                  ) : null}
                   <span className="conn-time">
                     Linked {formatShortDate(c.connectedAt)}
                   </span>

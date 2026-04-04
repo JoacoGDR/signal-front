@@ -128,7 +128,7 @@ export function OAuthCallback() {
           <ul className="oauth-callback-list">
             {results.map((r) => (
               <li key={r.id}>
-                {r.platform} — {r.externalAccountId}
+                {r.platform} — {r.displayName ?? r.externalAccountId}
               </li>
             ))}
           </ul>

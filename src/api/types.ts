@@ -76,6 +76,7 @@ export type AccountConnectionResponse = {
   id: string;
   platform: PlatformType;
   externalAccountId: string;
+  displayName: string | null;
   connectedAt: string;
 };
 
