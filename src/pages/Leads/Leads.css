@@ -81,6 +81,16 @@
   color: var(--signal-heading);
 }
 
+.leads-name-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.leads-name-link:hover {
+  color: var(--signal-accent);
+  text-decoration: underline;
+}
+
 .leads-cell-muted {
   color: var(--signal-text-muted);
   white-space: nowrap;

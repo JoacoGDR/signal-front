@@ -90,3 +90,26 @@ export type WhatsAppConfig = {
   appId: string;
   configId: string;
 };
+
+export type CommentThreadResponse = {
+  id: string;
+  leadId: string;
+  platform: PlatformType;
+  externalMediaId: string;
+  mediaProductType: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CommentResponse = {
+  id: string;
+  commentThreadId: string;
+  parentCommentId: string | null;
+  platform: PlatformType;
+  externalCommentId: string;
+  authorExternalId: string | null;
+  authorUsername: string | null;
+  text: string | null;
+  createdAt: string;
+  updatedAt: string;
+};

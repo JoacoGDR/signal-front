@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Connections } from "./pages/Connections/Connections";
 import { Inbox } from "./pages/Inbox/Inbox";
+import { LeadDetail } from "./pages/LeadDetail/LeadDetail";
 import { Leads } from "./pages/Leads/Leads";
 import { Login } from "./pages/Login/Login";
 import { OAuthCallback } from "./pages/OAuthCallback/OAuthCallback";
@@ -30,6 +31,7 @@ export default function App() {
           <Route index element={<Navigate to="/app/inbox" replace />} />
           <Route path="inbox" element={<Inbox />} />
           <Route path="leads" element={<Leads />} />
+          <Route path="leads/:leadId" element={<LeadDetail />} />
           <Route path="connections" element={<Connections />} />
         </Route>
       </Route>

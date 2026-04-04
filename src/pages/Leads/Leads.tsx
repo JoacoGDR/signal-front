@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api, ApiError } from "../../api/client";
 import type { LeadResponse, LeadStatus } from "../../api/types";
 import { formatShortDate } from "../../util/format";
@@ -107,7 +108,12 @@ export function Leads() {
               {leads.map((lead) => (
                 <tr key={lead.id}>
                   <td className="leads-cell-strong">
-                    {lead.name?.trim() || "—"}
+                    <Link
+                      to={`/app/leads/${lead.id}`}
+                      className="leads-name-link"
+                    >
+                      {lead.name?.trim() || "—"}
+                    </Link>
                   </td>
                   <td>
                     <span className="leads-platform">{lead.platform}</span>
