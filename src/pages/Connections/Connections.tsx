@@ -95,9 +95,12 @@ export function Connections() {
     setError(null);
     try {
       const uri = redirectUriFor(platform);
-      const res = await api.get<{ url: string }>(
+      const res = await api.get<{ url: string; codeVerifier?: string }>(
         `/oauth/${platform}/auth-url?redirectUri=${encodeURIComponent(uri)}`,
       );
+      if (res.codeVerifier) {
+        sessionStorage.setItem("oauth_code_verifier", res.codeVerifier);
+      }
       window.location.href = res.url;
     } catch (e) {
       setError(e instanceof ApiError ? e.message : "Could not start OAuth");

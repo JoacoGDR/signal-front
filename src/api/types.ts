@@ -86,6 +86,7 @@ export type OAuthCallbackRequest = {
   redirectUri: string;
   phoneNumberId?: string;
   wabaId?: string;
+  codeVerifier?: string;
 };
 
 export type WhatsAppConfig = {

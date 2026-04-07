@@ -56,9 +56,13 @@ export function OAuthCallback() {
 
     void (async () => {
       try {
+        const codeVerifier =
+          sessionStorage.getItem("oauth_code_verifier") ?? undefined;
+        sessionStorage.removeItem("oauth_code_verifier");
+
         const list = await api.post<AccountConnectionResponse[]>(
           `/oauth/${platform}/callback`,
-          { code, redirectUri },
+          { code, redirectUri, codeVerifier },
         );
         if (cancelled) return;
         setResults(list);
