@@ -14,16 +14,18 @@ import { formatShortDate } from "../../util/format";
 import { redirectUriFor } from "../../util/oauth";
 import "./Connections.css";
 
-const REDIRECT_PLATFORMS: PlatformType[] = ["META", "INSTAGRAM"];
+const REDIRECT_PLATFORMS: PlatformType[] = ["META", "INSTAGRAM", "MELI"];
 
 function platformLabel(p: PlatformType): string {
   switch (p) {
     case "META":
-      return "Meta (Pages)";
+      return "Meta";
     case "INSTAGRAM":
       return "Instagram";
     case "WHATSAPP":
       return "WhatsApp";
+    case "MELI":
+      return "MercadoLibre";
     default:
       return p;
   }
@@ -166,8 +168,9 @@ export function Connections() {
       <header className="page-header">
         <h1>Connected accounts</h1>
         <p className="page-header-desc">
-          Link Meta Pages, Instagram Business accounts, and WhatsApp Business
-          accounts so webhooks and messages route to your workspace.
+          Link Meta Pages, Instagram Business accounts, WhatsApp Business
+          accounts, and MercadoLibre so webhooks and messages route to your
+          workspace.
         </p>
       </header>
 
@@ -180,8 +183,9 @@ export function Connections() {
       <section className="conn-section panel">
         <h2 className="conn-section-title">Add a channel</h2>
         <p className="conn-section-desc">
-          For Meta and Instagram you will be redirected to approve access. For
-          WhatsApp, a popup will guide you through the Embedded Signup flow.
+          For Meta, Instagram, and MercadoLibre you will be redirected to
+          approve access. For WhatsApp, a popup will guide you through the
+          Embedded Signup flow.
         </p>
         <div className="conn-actions">
           {REDIRECT_PLATFORMS.map((p) => (

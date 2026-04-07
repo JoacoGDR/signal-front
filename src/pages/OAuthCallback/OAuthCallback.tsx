@@ -5,7 +5,7 @@ import type { AccountConnectionResponse, PlatformType } from "../../api/types";
 import { redirectUriFor } from "../../util/oauth";
 import "./OAuthCallback.css";
 
-const ALLOWED: PlatformType[] = ["META", "INSTAGRAM", "WHATSAPP"];
+const ALLOWED: PlatformType[] = ["META", "INSTAGRAM", "WHATSAPP", "MELI"];
 
 function isPlatform(p: string | undefined): p is PlatformType {
   return p !== undefined && (ALLOWED as string[]).includes(p);
